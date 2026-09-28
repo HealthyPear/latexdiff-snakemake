@@ -17,7 +17,9 @@
             "ms-python.python",
             "charliermarsh.ruff",
             "GitHub.copilot",
-            "renan-r-santos.pixi-code"
+            "renan-r-santos.pixi-code",
+            "tfehlmann.snakefmt",
+            "snakemake.snakemake-lang"
         ]
       }
     },

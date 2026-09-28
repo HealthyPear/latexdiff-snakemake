@@ -1,5 +1,7 @@
 {
     "recommendations": [
-        "renan-r-santos.pixi-code"
+        "renan-r-santos.pixi-code",
+        "snakemake.snakemake-lang",
+        "tfehlmann.snakefmt"
     ]
 }
