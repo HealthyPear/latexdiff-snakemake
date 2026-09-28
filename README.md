@@ -1,5 +1,9 @@
 # latexdiff Snakemake pipeline
 
+[![Snakemake](https://img.shields.io/badge/Snakemake-%E2%89%A59.27.0-2c8ebb.svg?style=flat-square&logo=snakemake)](https://snakemake.readthedocs.io/)
+[![Pixi](https://img.shields.io/badge/Pixi-%E2%89%A50.81.0-4b9.svg?style=flat-square)](https://pixi.sh/)
+[![Tectonic](https://img.shields.io/badge/Tectonic-0.17.0-2c3e50.svg?style=flat-square)](https://tectonic-typesetting.github.io/)
+
 This was tested on an A&A manuscript, so other use cases might prove easier or not.
 
 ## Requirements
@@ -7,6 +11,9 @@ This was tested on an A&A manuscript, so other use cases might prove easier or n
 The only requirements is [Snakemake](https://snakemake.readthedocs.io/en/stable/).
 
 It is recommended to install it using [pixi](https://pixi.prefix.dev/latest/).
+
+> [!TIP]
+> If you use [VSCode](https://code.visualstudio.com/) you only need [Docker](https://docs.docker.com/get-started/get-docker/): open the cloned repo with VSCode and agree to re-open the workflow in the devcontainer shipped with it when prompted
 
 ## Quick start
 

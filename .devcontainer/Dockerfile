@@ -1,0 +1,14 @@
+FROM mcr.microsoft.com/devcontainers/base:jammy
+
+ARG PIXI_VERSION=v0.81.0
+
+RUN curl -L -o /usr/local/bin/pixi -fsSL --compressed "https://github.com/prefix-dev/pixi/releases/download/${PIXI_VERSION}/pixi-$(uname -m)-unknown-linux-musl" \
+    && chmod +x /usr/local/bin/pixi \
+    && pixi info
+
+# set some user and workdir settings to work nicely with vscode
+USER vscode
+WORKDIR /home/vscode
+
+RUN pixi global install snakemake=9.27.0 conda=26.7.2 -c conda-forge -c bioconda
+ENV PATH="/home/vscode/.pixi/bin:${PATH}"
