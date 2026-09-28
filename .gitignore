@@ -2,3 +2,4 @@ sources
 results
 .snakemake
 .mypy_cache
+.DS_Store
