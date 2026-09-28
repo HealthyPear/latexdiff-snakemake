@@ -1,0 +1,10 @@
+name: latexdiff-pipeline
+channels:
+  - conda-forge
+dependencies:
+  - python
+  - tectonic=0.17.0
+  - latexdiff
+  # - perl
+  - rsync=3.4.4
+  - dnachun::biber=2.17          # harmless to include now; needed only if you ever move to biblatex
