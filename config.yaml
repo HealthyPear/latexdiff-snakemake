@@ -1,0 +1,63 @@
+# ---------------------------------------------------------------------------
+# latexdiff-pipeline configuration
+# ---------------------------------------------------------------------------
+
+old_dir: "sources/old"        # must contain all required source files (figures and whatnot)
+new_dir: "sources/new"        # same layout, but for the new version
+
+main_tex: "ms.tex"            # filename of the main .tex file, must be identical in both dirs
+output_name: "ms_diff"        # base name for the generated diff .tex / .pdf
+
+engine: "tectonic" # or pdflatex if in your PATH
+
+# ---------------------------------------------------------------------------
+# latexdiff options.
+#
+# These are not arbitrary -- each one fixed a specific crash found while
+# testing on my specific case:
+#
+# - math_markup: 0
+#     Diff whole formulas atomically instead of word-by-word. Needed
+#     because my manuscript wrote adjacent inline maths as
+#     "...$$..." (two separate $..$ groups touching), which latexdiff's
+#     word-level math tokenizer chokes on regardless of this setting --
+#     the *real* fix for that is the dollar-dollar preprocessing step
+#     (always on, see fix_math_dollars below) -- but math_markup=0 is
+#     good practice on top of it and avoids a separate class of
+#     formula-splitting artifacts.
+#
+# - graphics_markup: "none"
+#     Disables latexdiff's automatic blue-frame/red-cross highlighting
+#     of changed \includegraphics figures. latexdiff's own --help text
+#     literally recommends this as the workaround for "Misplaced
+#     \noalign" table errors, and in my case also avoided a
+#     "Division by 0" crash from \resizebox{w}{!}{...} when the
+#     diff markup landed between resizebox's arguments.
+#
+# - picture_env_extra
+#     Environments added to latexdiff's PICTUREENV list, i.e. treated
+#     as atomic blocks: if anything inside changed, show the WHOLE OLD
+#     block then the WHOLE NEW block, with no word-level markup inside.
+#     This is what actually stops pdflatex from crashing on:
+#       * tables using \multicolumn where a cell's content was
+#         rewritten ("Misplaced \omit" / runaway \UL@word errors)
+#       * figure* environments where an \includegraphics path changed
+#         inside a \resizebox (the "Division by 0" case above)
+#     Trade-off: changes inside these environments are compiled
+#     correctly but are NOT visually flagged as changed in the PDF.
+#     The pipeline compensates with a separate text report (see below).
+# ---------------------------------------------------------------------------
+latexdiff:
+  math_markup: 0
+  graphics_markup: "none"
+  picture_env_extra:
+    - 'tabular\*?'
+    - 'figure\*?'
+
+# fix_math_dollars: always applied before latexdiff, on both old and new
+# .tex, identically. Turns any literal "$$" (two adjacent inline-math
+# delimiters with nothing between them, e.g. "$\sim1.2\times10^6$$M_{\odot}$")
+# into "$" + "{}" + "$": an invisible empty group inserted between the two
+# delimiters. This is a no-op visually, but it stops LaTeX and latexdiff
+# from misreading "$$" as a legacy display-math delimiter. Escaped "\$"
+# (currency signs etc.) are left untouched.
