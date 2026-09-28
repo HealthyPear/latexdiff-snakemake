@@ -1,0 +1,4 @@
+sources
+results
+.snakemake
+.mypy_cache
