@@ -160,9 +160,6 @@ if ENGINE == "tectonic":
             r"""
             mkdir -p results/logs
             cd {BUILD}
-            tectonic -X compile --keep-intermediates --keep-logs {NAME}.tex >> ../logs/tectonic.log 2>&1 || true
-            bibtex {NAME} >> ../logs/tectonic.log 2>&1 || true
-            tectonic -X compile --keep-intermediates --keep-logs {NAME}.tex >> ../logs/tectonic.log 2>&1 || true
             tectonic -X compile --keep-logs {NAME}.tex >> ../logs/tectonic.log 2>&1 || true
             cp {NAME}.pdf ../{NAME}.pdf
             """
