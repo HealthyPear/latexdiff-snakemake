@@ -29,6 +29,9 @@ rule all:
         f"results/{NAME}.pdf",
         "results/figure_table_change_report.txt",
 
+rule clean:
+    shell:
+        "rm -rf results"
 
 # ---------------------------------------------------------------------------
 # 1. Neutralise adjacent "$$" in both sources before anything else touches
