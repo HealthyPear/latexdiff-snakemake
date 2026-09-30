@@ -45,7 +45,11 @@ rule fix_math_old:
     conda:
         "environment.yml"
     shell:
-        "python scripts/fix_math_dollars.py {input} {output}"
+        r"""
+        python scripts/fix_math_dollars.py {input} {output}.tmp
+        python scripts/strip_comment_envs.py {output}.tmp {output}
+        rm {output}.tmp
+        """
 
 
 rule fix_math_new:
@@ -56,7 +60,11 @@ rule fix_math_new:
     conda:
         "environment.yml"
     shell:
-        "python scripts/fix_math_dollars.py {input} {output}"
+        r"""
+        python scripts/fix_math_dollars.py {input} {output}.tmp
+        python scripts/strip_comment_envs.py {output}.tmp {output}
+        rm {output}.tmp
+        """
 
 
 # ---------------------------------------------------------------------------
@@ -76,6 +84,7 @@ rule latexdiff:
             + "|".join(config["latexdiff"]["picture_env_extra"])
             + ")"
         ),
+        verbatim_regex=r"(?:verbatim\*?|comment)",
     conda:
         "environment.yml"
     shell:
@@ -85,6 +94,7 @@ rule latexdiff:
             --math-markup={params.math_markup} \
             --graphics-markup={params.graphics_markup} \
             --config="PICTUREENV={params.picture_regex}" \
+            --config="VERBATIMENV={params.verbatim_regex}" \
             {input.old} {input.new} > {output}.raw
 
         python scripts/disable_risky_url_links.py {output}.raw {output}
